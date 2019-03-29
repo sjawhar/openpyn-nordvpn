@@ -899,6 +899,7 @@ when asked, provide the sudo credentials")
         openvpn_options = ""
     if (use_systemd_resolved or use_resolvconf) and skip_dns_patch is False:  # Debian Based OS + do DNS patching
         try:
+            route_up_script = __basefilepath__ + "scripts/docker-shim.sh"
             if use_systemd_resolved:
                 openvpn_options += " " + "--dhcp-option DOMAIN-ROUTE ."
                 up_down_script = __basefilepath__ + "scripts/update-systemd-resolved.sh"
@@ -922,6 +923,7 @@ using it to update DNS Resolver Entries", detected_os)
                     "--config", vpn_config_file,
                     "--auth-user-pass", __basefilepath__ + "credentials",
                     "--script-security", "2",
+                    "--route-up", route_up_script,
                     "--up", up_down_script,
                     "--down", up_down_script,
                     "--down-pre",
